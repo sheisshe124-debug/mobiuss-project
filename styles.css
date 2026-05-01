@@ -1,0 +1,728 @@
+/* =========================================================
+   Möbiuss project — portfolio styles
+   palette: white + black + gray (no gradients, no italics)
+   typeface: Noto Sans / Noto Sans KR
+   ========================================================= */
+
+:root {
+  /* Bauhaus palette — warm concrete gray + signage white + yellow accent */
+  --bg:           #92938b;                /* 건물 외벽 — 따뜻한 콘크리트 그레이 */
+  --bg-soft:      #7e7f77;                /* 그림자면 — 살짝 어두운 그레이 */
+  --bg-rgb:       146, 147, 139;
+  --ink:          #f4f3ed;                /* BAUHAUS 사이니지 화이트 */
+  --ink-2:        #e9e8e1;                /* 살짝 가라앉힌 화이트 */
+  --ink-dim:      #cfcec7;                /* 보조 텍스트 */
+  --ink-soft:     #aeaea6;                /* 가장 흐릿한 라벨 */
+  --line:         rgba(244, 243, 237, 0.20);
+  --line-strong:  rgba(244, 243, 237, 0.40);
+
+  /* particles & accent — Bauhaus 버밀리언 오렌지 */
+  --pixel:        #e54a23;
+
+  --sans:  "Noto Sans KR", "Noto Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --en:    "Noto Sans", "Noto Sans KR", sans-serif;
+  --mono:  "Noto Sans Mono", ui-monospace, monospace;
+
+  --maxw: 1280px;
+  --pad:  clamp(20px, 5vw, 64px);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+html, body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.55;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a { color: inherit; text-decoration: none; }
+em, i { font-style: normal; }   /* italic 일괄 제거 */
+
+::selection { background: var(--ink); color: var(--bg); }
+
+img, svg, iframe { display: block; max-width: 100%; }
+
+/* =========================================================
+   네비
+   ========================================================= */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 50;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px var(--pad);
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  background: rgba(var(--bg-rgb), 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.nav-logo {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-weight: 500;
+}
+.logo-text { letter-spacing: 0.02em; color: var(--ink); }
+.dim { color: var(--ink-soft); font-weight: 400; }
+
+.logo-mobius {
+  display: inline-block;
+  width: 28px; height: 14px;
+  position: relative;
+  color: var(--pixel);
+}
+
+.nav-links { display: flex; gap: 26px; }
+.nav-links a {
+  position: relative;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  letter-spacing: 0.1em;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute; left: 0; bottom: -6px;
+  width: 0; height: 1px; background: var(--ink);
+  transition: width .3s ease;
+}
+.nav-links a:hover::after { width: 100%; }
+
+@media (max-width: 600px) {
+  .nav-links { gap: 14px; font-size: 11px; }
+}
+
+/* =========================================================
+   HERO
+   ========================================================= */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  padding: 140px var(--pad) 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-bottom: 1px solid var(--line);
+  overflow: hidden;
+}
+
+/* 풀스크린 픽셀 모비우스 (배경 레이어, 텍스트 뒤) */
+.pixel-mobius-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* 화면 가장자리에 약간 페이딩 */
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 60%, transparent 95%);
+          mask-image: radial-gradient(ellipse at center, #000 60%, transparent 95%);
+}
+.pixel-mobius-bg svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  /* 원 입자라서 안티알리어싱 유지 (crispEdges 제거) */
+}
+
+/* 모든 hero 콘텐츠는 픽셀 위로 */
+.hero > .hero-content,
+.hero > .scroll-cue {
+  position: relative;
+  z-index: 2;
+}
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  /* 콘텐츠 자체는 좌측 정렬 */
+}
+
+.hero-meta {
+  display: flex;
+  gap: 12px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  margin-bottom: 36px;
+  flex-wrap: wrap;
+}
+.tag {
+  padding: 5px 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  /* 배경/블러 제거 — 글씨 위 안개 효과 방지 */
+}
+
+.team-name {
+  font-family: var(--en);
+  font-weight: 600;
+  font-size: clamp(56px, 13vw, 180px);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+}
+.team-name .line { display: block; }
+.team-name .line-2 {
+  font-weight: 300;
+  margin-left: clamp(20px, 6vw, 90px);
+  /* italic, gradient 모두 제거 */
+}
+
+.hero-sub {
+  margin-top: 36px;
+  font-family: var(--sans);
+  font-size: clamp(14px, 1.5vw, 17px);
+  color: var(--ink-2);
+  max-width: 640px;
+  /* 배경/블러 제거 — 글씨 위 안개 효과 방지 */
+}
+.hero-sub em {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* scroll cue */
+.scroll-cue {
+  position: absolute;
+  left: var(--pad); bottom: 36px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+.cue-line {
+  width: 1px; height: 50px;
+  background: linear-gradient(to bottom, var(--ink-dim), transparent);
+  animation: cue 2s ease-in-out infinite;
+  transform-origin: top;
+}
+@keyframes cue {
+  0%,100% { transform: scaleY(0.4); opacity: 0.4; }
+  50%     { transform: scaleY(1);   opacity: 1;   }
+}
+
+/* =========================================================
+   섹션 공통
+   ========================================================= */
+section {
+  position: relative;
+  padding: 130px var(--pad);
+  max-width: var(--maxw);
+  margin: 0 auto;
+}
+
+.section-head {
+  display: flex; gap: 14px; align-items: center;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  margin-bottom: 36px;
+}
+.section-num { color: var(--ink); font-weight: 500; }
+
+.section-title {
+  font-family: var(--en);
+  font-weight: 600;
+  font-size: clamp(36px, 6vw, 78px);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  margin-bottom: 64px;
+  color: var(--ink);
+}
+.section-title em {
+  font-weight: 300;
+  color: var(--ink-dim);
+}
+
+/* =========================================================
+   ABOUT
+   ========================================================= */
+.about-quote {
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: clamp(24px, 4.2vw, 56px);
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  margin-bottom: 56px;
+  max-width: 1100px;
+  color: var(--ink);
+}
+.about-quote em {
+  font-weight: 600;
+  color: var(--ink);
+}
+.about-quote .strike {
+  position: relative;
+  display: inline-block;
+  color: var(--ink-dim);
+}
+.about-quote .strike::after {
+  content: '';
+  position: absolute; left: -4%; right: -4%; top: 52%;
+  height: 3px;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: strike 1.6s ease-out 0.6s forwards;
+}
+@keyframes strike {
+  to { transform: scaleX(1); }
+}
+
+.about-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  max-width: 1100px;
+  margin-bottom: 96px;
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--ink-dim);
+}
+.about-body p {
+  padding-left: 22px;
+  border-left: 1px solid var(--line-strong);
+}
+.about-body strong { color: var(--ink); font-weight: 600; }
+.about-body em {
+  color: var(--ink);
+  font-weight: 500;
+}
+@media (max-width: 720px) {
+  .about-body { grid-template-columns: 1fr; gap: 24px; }
+}
+
+/* 마키 */
+.marquee {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  overflow: hidden;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 22px 0;
+  background: var(--bg-soft);
+}
+.marquee-track {
+  display: flex;
+  gap: 28px;
+  white-space: nowrap;
+  font-family: var(--en);
+  font-weight: 400;
+  font-size: clamp(24px, 3.6vw, 48px);
+  color: var(--ink-dim);
+  animation: scroll-x 38s linear infinite;
+}
+.marquee-track span:nth-child(2n) {
+  color: var(--pixel);
+}
+@keyframes scroll-x {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* =========================================================
+   MEMBERS / WORKS
+   ========================================================= */
+.member-block {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) 2.4fr;
+  gap: 56px;
+  padding: 56px 0;
+  border-top: 1px solid var(--line);
+}
+.member-block:last-of-type { border-bottom: 1px solid var(--line); }
+
+@media (max-width: 920px) {
+  .member-block { grid-template-columns: 1fr; gap: 32px; }
+}
+
+.member-info {
+  position: sticky;
+  top: 100px;
+  align-self: start;
+}
+@media (max-width: 920px) {
+  .member-info { position: static; }
+}
+
+.member-index {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--ink-soft);
+  margin-bottom: 14px;
+}
+.member-role {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  margin-bottom: 10px;
+}
+.member-name {
+  font-family: var(--en);
+  font-weight: 600;
+  font-size: clamp(26px, 3vw, 36px);
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+  line-height: 1.1;
+  color: var(--ink);
+}
+.member-name .en {
+  display: block;
+  font-weight: 300;
+  font-size: 0.55em;
+  color: var(--ink-dim);
+  margin-top: 4px;
+  letter-spacing: 0;
+}
+.member-desc {
+  margin-top: 18px;
+  font-size: 14.5px;
+  color: var(--ink-dim);
+  line-height: 1.7;
+  max-width: 320px;
+}
+
+/* affiliation line: 무용원 · 무용이론과 · 예술경영전공 */
+.member-affil {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: var(--ink-soft);
+  margin-top: 14px;
+  line-height: 1.5;
+}
+
+/* 섹션 라벨 — 수상경력 / 주요 참여작 */
+.member-section-label {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  margin-top: 24px;
+  margin-bottom: 6px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+.member-section-label + ul {
+  margin-top: 4px;
+}
+
+/* awards / works 리스트 */
+.member-works,
+.member-awards {
+  list-style: none;
+}
+.member-works li,
+.member-awards li {
+  font-size: 13px;
+  color: var(--ink-2);
+  padding: 8px 0;
+  display: flex;
+  gap: 14px;
+  line-height: 1.55;
+  border-bottom: 1px dashed var(--line);
+}
+.member-works li:last-child,
+.member-awards li:last-child { border-bottom: 0; }
+
+.member-works .year,
+.member-awards .year {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-dim);
+  flex-shrink: 0;
+  padding-top: 2px;
+  min-width: 50px;
+  letter-spacing: 0.02em;
+}
+.member-works .work-title,
+.member-awards .work-title {
+  flex: 1;
+  color: var(--ink);
+}
+.role-tag {
+  display: inline-block;
+  margin-left: 4px;
+  padding: 1px 7px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--ink-dim);
+  white-space: nowrap;
+  vertical-align: 2px;
+}
+
+/* works grid */
+.works-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+@media (max-width: 720px) {
+  .works-grid { grid-template-columns: 1fr; }
+}
+
+.work {
+  position: relative;
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  overflow: hidden;
+  transition: border-color .25s ease, transform .25s ease, box-shadow .25s ease;
+}
+.work:hover {
+  border-color: var(--line-strong);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.06);
+}
+.work figcaption {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--ink-dim);
+  padding: 10px 14px;
+  border-top: 1px solid var(--line);
+  background: var(--bg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  text-transform: none;
+}
+.work figcaption span {
+  font-family: var(--mono);
+  letter-spacing: 0.04em;
+}
+.watch-link {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  border-bottom: 1px solid var(--ink);
+  padding-bottom: 1px;
+  transition: opacity .25s ease;
+}
+.watch-link:hover { opacity: 0.6; }
+
+/* YouTube 16:9 */
+.yt-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+}
+.yt-frame iframe {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  border: 0;
+}
+
+/* Audio (음원) — HTML5 player */
+.work-audio { background: var(--bg); }
+.audio-frame {
+  padding: 26px 24px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-height: 220px;
+}
+.audio-meta { display: flex; flex-direction: column; gap: 6px; }
+.audio-tag {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.audio-title {
+  font-family: var(--en);
+  font-weight: 600;
+  font-size: 22px;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  line-height: 1.2;
+  margin: 0;
+}
+.audio-sub {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--ink-dim);
+}
+.audio-player {
+  width: 100%;
+  height: 40px;
+  outline: none;
+  /* 다크 모드에서 컨트롤이 보이게 */
+  accent-color: var(--ink);
+  color-scheme: dark;
+}
+.audio-player::-webkit-media-controls-panel {
+  background-color: var(--bg-soft);
+}
+.audio-note {
+  font-family: var(--sans);
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: var(--ink-dim);
+  padding-top: 12px;
+  border-top: 1px dashed var(--line);
+  margin: 0;
+}
+.ref {
+  font-family: var(--mono);
+  font-size: 0.9em;
+  color: var(--ink);
+  margin: 0 1px;
+}
+
+/* Instagram embed */
+.ig-frame {
+  position: relative;
+  width: 100%;
+  height: 720px;
+  background: var(--bg);
+}
+.ig-frame iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+@media (max-width: 720px) {
+  .ig-frame { height: 640px; }
+}
+
+/* link card */
+.link-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 28px 24px;
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  min-height: 160px;
+  transition: background .25s ease, border-color .25s ease, transform .25s ease;
+  position: relative;
+}
+.link-card:hover {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
+  transform: translateY(-2px);
+}
+.link-card:hover .link-card-platform,
+.link-card:hover .link-card-meta {
+  color: var(--ink-soft);
+}
+
+.link-card-platform {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 10px;
+  transition: color .25s ease;
+}
+.link-card-handle {
+  font-family: var(--en);
+  font-weight: 600;
+  font-size: 22px;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+.link-card-meta {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  margin-top: 10px;
+  transition: color .25s ease;
+}
+.link-card-wide {
+  grid-column: 1 / -1;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 80px;
+  padding: 22px 28px;
+}
+.link-card-wide .link-card-platform { margin-bottom: 0; }
+.link-card-wide .link-card-handle { font-size: 20px; }
+.link-card-wide .link-card-meta { margin-top: 0; }
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+.site-foot {
+  border-top: 1px solid var(--line);
+  background: var(--bg-soft);
+}
+.foot-inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px var(--pad);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-dim);
+  letter-spacing: 0.08em;
+}
+.foot-mark {
+  font-family: var(--en);
+  font-size: 18px;
+  color: var(--pixel);
+  font-weight: 700;
+}
+.dot { color: var(--ink-soft); }
+
+/* =========================================================
+   reveal on scroll
+   ========================================================= */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.9s cubic-bezier(.2,.7,.2,1), transform 0.9s cubic-bezier(.2,.7,.2,1);
+}
+.reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none !important; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
